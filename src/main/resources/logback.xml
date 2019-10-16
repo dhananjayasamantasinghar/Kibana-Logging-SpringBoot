@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+	<appender name="kibanaLogger-console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder
+			class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<providers>
+				<provider
+					class="net.logstash.logback.composite.loggingevent.ArgumentsJsonProvider" />
+				<timestamp />
+				<pattern>
+					<pattern>
+						{
+						"logger":"%logger",
+						"thread":"%thread",
+						"level": "%level",
+						"traceId": "%X{X-B3-TraceId:-}",
+						"spanId": "%X{X-B3-SpanId:-}",
+						"message":"%replace(%message){'null',''}",
+						"json_message":"%message",
+						"exception": "%ex"
+						}
+					</pattern>
+				</pattern>
+			</providers>
+		</encoder>
+	</appender>
+ 
+	<appender name="kibanaLogger-file" class="ch.qos.logback.core.FileAppender">
+		<file>logs/application.log</file>
+		<encoder
+			class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<providers>
+				<provider
+					class="net.logstash.logback.composite.loggingevent.ArgumentsJsonProvider" />
+				<timestamp />
+				<pattern>
+					<pattern>
+						{
+						"logger":"%logger",
+						"thread":"%thread",
+						"level": "%level",
+						"traceId": "%X{X-B3-TraceId:-}",
+						"spanId": "%X{X-B3-SpanId:-}",
+						"message":"%replace(%message){'null',''}",
+						"json_message":"%message",
+						"exception": "%ex"
+						}
+					</pattern>
+				</pattern>
+			</providers>
+		</encoder>
+	</appender>
+	<root level="INFO">
+		<appender-ref ref="kibanaLogger-console" />
+		<appender-ref ref="kibanaLogger-file" />
+	</root>
+</Configuration>
